@@ -1,0 +1,62 @@
+package com.nufe.jsvs;
+
+import java.util.Scanner;
+/**
+ * @author nobody
+ */
+public class findLargestBlock{
+    public static void main(String[] args) {
+        int[][]matrix=getInput();
+        int[]solution=findLargestBlock(matrix);
+        System.out.println("The maximum square submatrix is at"+
+                " ("+solution[0]+","+solution[1]+
+                ") "+"with size "+solution[2]);
+        }
+
+    public static int[] findLargestBlock(int[][] m) {
+        int[] a = new int[3];
+        int rowSize = m.length, colSize = m.length;
+        int[][] dp = new int[rowSize + 1][colSize + 1];
+        for (int row = rowSize - 1; row >= 0; --row) {
+            for (int col = colSize - 1; col >= 0; --col) {
+                if (m[row][col] == 1) {
+                    int size = dp[row + 1][col + 1];
+                    boolean flag = true;
+                    for (int i = 1; i <= size; ++i)
+                        if (m[row][col + i] == 0) {
+                            flag = false;
+                            break;
+                        }
+                    for (int i = 1; i <= size; ++i)
+                        if (m[row + i][col] == 0) {
+                            flag = false;
+                            break;
+                        }
+                    if (flag)
+                        dp[row][col] = size + 1;
+                    if (dp[row][col] > a[2]) {
+                        a[0] = row;
+                        a[1] = col;
+                        a[2] = dp[row][col];
+                    }
+                }
+            }
+        }
+        return a;
+    }
+
+    public static int[][] getInput() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the number of row" +
+                " in the matrix:");
+        int size = input.nextInt();
+        int[][] matrix = new int[size][size];
+        System.out.println("Enter the matrix row by row:");
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j <size;j++){
+                matrix[i][j]=input.nextInt();
+            }
+        }
+        return matrix;
+    }
+}
