@@ -1,20 +1,22 @@
 package com.nufe.jsvs;
 import java.util.Scanner;
 /**
-@author DUCHAMP 
+ * @author DUCHAMP
  */
 public class RelationalMatrixMultiplication {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the number of rows and columns of the matrix:");
-        byte m1 = input.nextByte();
-        byte n1 = input.nextByte();
-        byte m2 = input.nextByte();
-        byte n2 = input.nextByte();
+
+        byte m1 = input.nextByte();//a's row
+        byte n1 = input.nextByte();//a's column
+        byte m2 = input.nextByte();//b's row
+        byte n2 = input.nextByte();//b's column
+
         int[][] a = new int[m1][n1];
         int[][] b = new int[m2][n2];
         System.out.println("Input two matrices:");
-        if (n1 == m2) {
+        if (n1 == m2) {//当矩阵A的列数（column）等于矩阵B的行数（row）时，A与B可以相乘。
             for (int i = 0; i < a.length; i++) {
                 for (int j = 0; j < a[0].length; j++) {
                     a[i][j] = input.nextInt();
@@ -26,31 +28,58 @@ public class RelationalMatrixMultiplication {
                 }
             }
 
-            relationalMatrixMultiplication(a, b);
-        } else
+            int[][]c=relationalMatrixMultiplication(a, b);
+            output(c);
+        System.out.println("Make sure you want to compute the relational matrix.\n"+
+                "The default output is powers of A.Make sure a is equal to b.\n"+
+                "Do you want to calculate the second and third powers?(TorF)");
+        if("T".equals(input.next())){//选择是否要算关系矩阵的幂（默认是算A的幂）
+            int[][]arrayEven=relationalMatrixMultiplication(a,a);
+            int[][]arrayOdd=relationalMatrixMultiplication(arrayEven,a);
+            System.out.println("Even Power:");
+            output(arrayEven);
+            System.out.println("Odd Power:");
+            output(arrayOdd);
+        }
+        else
+            System.out.println("Go out and turn left. Don't forget to turn it off.");
+    }
+        else
             System.out.println("A and B can be multiplied "+
                     "when the number of columns in matrix A is equal to "+
                     "the number of rows in matrix B.\n"+
                     "Multiplication doesn't set up!");
     }
 
-    public static void relationalMatrixMultiplication(int[][]x,int[][]y){
-        int[][]c=new int[(x[0].length)][(y[0].length)];
-        for(int i=0;i<c.length;i++){
-            for(int j=0;j<c[0].length;j++){
-                for(int m=0;m<c[0].length;m++)
-                c[i][j]+=x[i][m]*y[m][j];
-                if(c[i][j]!=0) {
-                    c[i][j]=1;
+    /**
+     *
+     * @param x The first matrix
+     * @param y The second matrix
+     * @return The resulting matrix
+     */
+    public static int[][] relationalMatrixMultiplication(int[][]x,int[][]y){
+        int[][]c=new int[(x.length)][(y[0].length)];//矩阵C的行数等于矩阵X的行数，C的列数等于Y的列数。
+        for(int i=0;i<c.length;i++) {
+            for (int j = 0; j < c[0].length; j++) {
+                for (int m = 0; m < c[0].length; m++)
+                    c[i][j] += x[i][m] * y[m][j];//乘积C的第m行第n列的元素等于矩阵A的第m行的元素与矩阵B的第n列对应元素乘积之和。
+                if (c[i][j] != 0) {//转成关系矩阵
+                    c[i][j] = 1;
+                    }
                 }
             }
+        return c;
         }
-        for (int[] ints : c) {
+
+    /**
+     * @param x The matrix array to be output
+     */
+    public static void output(int[][]x) {
+        for (int[] ints : x) {
             for (int q : ints) {
                 System.out.print(q + " ");
             }
             System.out.println("\b");
         }
     }
-
 }
