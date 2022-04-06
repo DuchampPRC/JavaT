@@ -1,54 +1,25 @@
-package com.nufe.jsvs;
+package com.nufe.algorithms;
 import java.util.Scanner;
 /**
  * @author DUCHAMP
  */
 public class RelationalMatrixMultiplication {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter the number of rows and columns of the matrix:");
-
-        byte m1 = input.nextByte();//a's row
-        byte n1 = input.nextByte();//a's column
-        byte m2 = input.nextByte();//b's row
-        byte n2 = input.nextByte();//b's column
-
-        int[][] a = new int[m1][n1];
-        int[][] b = new int[m2][n2];
-        System.out.println("Input two matrices:");
-        if (n1 == m2) {//当矩阵A的列数（column）等于矩阵B的行数（row）时，A与B可以相乘。
-            for (int i = 0; i < a.length; i++) {
-                for (int j = 0; j < a[0].length; j++) {
-                    a[i][j] = input.nextInt();
-                }
-            }
-            for (int i = 0; i < b.length; i++) {
-                for (int j = 0; j < b[0].length; j++) {
-                    b[i][j] = input.nextInt();
-                }
-            }
-
-            int[][]c=relationalMatrixMultiplication(a, b);
+        System.out.println("A and B can be multiplied " +
+                "when the number of columns in matrix A is equal to " +
+                "the number of rows in matrix B.");
+        int[][]a=getInput();
+        int[][]b=getInput();
+        if ((a[0].length)==(b.length)) {//当矩阵A的列数（column）等于矩阵B的行数（row）时，A与B可以相乘。
+            int[][] c = relationalMatrixMultiplication(a, b);
             output(c);
-        System.out.println("Make sure you want to compute the relational matrix.\n"+
-                "The default output is powers of A.Make sure a is equal to b.\n"+
-                "Do you want to calculate the second and third powers?(TorF)");
-        if("T".equals(input.next())){//选择是否要算关系矩阵的幂（默认是算A的幂）
-            int[][]arrayEven=relationalMatrixMultiplication(a,a);
-            int[][]arrayOdd=relationalMatrixMultiplication(arrayEven,a);
-            System.out.println("Even Power:");
-            output(arrayEven);
-            System.out.println("Odd Power:");
-            output(arrayOdd);
+            System.out.println("Make sure you want to compute the relational matrix.\n" +
+                    "The default output is powers of A.\n" +
+                    "Do you want to calculate the second and third powers?(TorF)");
+            computePowerOfRelationalMatrix(a);
         }
         else
-            System.out.println("Go out and turn left. Don't forget to turn it off.");
-    }
-        else
-            System.out.println("A and B can be multiplied "+
-                    "when the number of columns in matrix A is equal to "+
-                    "the number of rows in matrix B.\n"+
-                    "Multiplication doesn't set up!");
+            System.out.println("Multiplication doesn't set up!");
     }
 
     /**
@@ -82,4 +53,41 @@ public class RelationalMatrixMultiplication {
             System.out.println("\b");
         }
     }
-}
+
+    /**
+     * @return Input matrix
+     */
+    public static int[][] getInput(){
+        Scanner input=new Scanner(System.in);
+        System.out.print("Enter the number of row and column of the matrix:");
+
+        int m1 = input.nextInt();//matrix's row
+        int n1 = input.nextInt();//matrix's column
+        System.out.println("Input the matrix:");
+        int[][] array = new int[m1][n1];
+        for (int i = 0; i < array.length; i++) {
+                for (int j = 0; j < array[0].length; j++) {
+                    array[i][j] = input.nextInt();
+                }
+            }
+        return array;
+
+    }
+
+    /**
+     * @param array The relational matrix that needs to be calculated
+     */
+    public static void computePowerOfRelationalMatrix(int[][]array){
+        try(Scanner input=new Scanner(System.in)) {
+            if ("T".equals(input.next())) {//选择是否要算关系矩阵的幂（默认是算A的幂）
+                int[][] arrayEven = relationalMatrixMultiplication(array, array);
+                int[][] arrayOdd = relationalMatrixMultiplication(arrayEven, array);
+                System.out.println("Even Power:");
+                output(arrayEven);
+                System.out.println("Odd Power:");
+                output(arrayOdd);
+            } else
+                System.out.println("Go out and turn left. Don't forget to turn it off.");
+        }
+    }
+    }
