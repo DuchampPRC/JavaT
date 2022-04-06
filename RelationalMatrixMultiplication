@@ -1,0 +1,56 @@
+package com.nufe.jsvs;
+import java.util.Scanner;
+/**
+@author DUCHAMP 
+ */
+public class RelationalMatrixMultiplication {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the number of rows and columns of the matrix:");
+        byte m1 = input.nextByte();
+        byte n1 = input.nextByte();
+        byte m2 = input.nextByte();
+        byte n2 = input.nextByte();
+        int[][] a = new int[m1][n1];
+        int[][] b = new int[m2][n2];
+        System.out.println("Input two matrices:");
+        if (n1 == m2) {
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < a[0].length; j++) {
+                    a[i][j] = input.nextInt();
+                }
+            }
+            for (int i = 0; i < b.length; i++) {
+                for (int j = 0; j < b[0].length; j++) {
+                    b[i][j] = input.nextInt();
+                }
+            }
+
+            relationalMatrixMultiplication(a, b);
+        } else
+            System.out.println("A and B can be multiplied "+
+                    "when the number of columns in matrix A is equal to "+
+                    "the number of rows in matrix B.\n"+
+                    "Multiplication doesn't set up!");
+    }
+
+    public static void relationalMatrixMultiplication(int[][]x,int[][]y){
+        int[][]c=new int[(x[0].length)][(y[0].length)];
+        for(int i=0;i<c.length;i++){
+            for(int j=0;j<c[0].length;j++){
+                for(int m=0;m<c[0].length;m++)
+                c[i][j]+=x[i][m]*y[m][j];
+                if(c[i][j]!=0) {
+                    c[i][j]=1;
+                }
+            }
+        }
+        for (int[] ints : c) {
+            for (int q : ints) {
+                System.out.print(q + " ");
+            }
+            System.out.println("\b");
+        }
+    }
+
+}
